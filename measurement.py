@@ -32,7 +32,7 @@ def run_video():
 
 	# get url
 	url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
-	url = 'https://www.w3.org/2010/05/video/mediaevents.html'
+	url = 'https://video-qoe-app.onrender.com/measurement'
     #'https://www.w3.org/2010/05/video/mediaevents.html'
 
 	# set file prefix
