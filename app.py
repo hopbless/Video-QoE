@@ -1,7 +1,7 @@
 import numpy as np
 import flask
 from flask import Flask, render_template, request, redirect
-import measurement
+from measurement import run_video
 
 
 

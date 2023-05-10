@@ -1,4 +1,4 @@
-import selenium
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -6,10 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import time
 import datetime
 import json
-from pyvirtualdisplay import display
 import numpy as np
-import sys
-import os
 
 
 CONFIGFILE = 'config'
@@ -206,9 +203,6 @@ def calculateStallings(prefix):
 	q90 = np.percentile(stallings, 90)
 	return str(numOfStallings) + "," + str(avgStalling) + "," + str(maxStalling) + "," + str(minStalling) + "," + str(q25) + "," + str(q50) + "," + str(q75) + "," + str(q90)
 
-# Write output without buffering
-# sys.stdout.flush()
-# sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
 
 
 try:

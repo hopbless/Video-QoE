@@ -3,5 +3,5 @@ Flask
 numpy
 pandas
 gunicorn
-selenium
+selenium==3.141.0
 
