@@ -5,6 +5,7 @@ from measurement import run_video
 
 
 
+
 app = Flask(__name__, template_folder='templates')
 
 
@@ -19,7 +20,11 @@ def home():
 def play():
     return render_template("video_player.html")
 
-#run_video()
+@app.route("/measurement", methods =["GET", "POST"])
+def record_data():
+    run_video()
+    return render_template("about.html")
+
 
 
 if __name__ == "__main__":

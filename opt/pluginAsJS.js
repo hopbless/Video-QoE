@@ -22,7 +22,7 @@ var init = function (){
 		addEventListeners();
 		
 
-		setTimeout(run, 5000)
+		setTimeout(run, 5000);
 
 	} else {
 		setTimeout(init, 1000);
@@ -39,7 +39,7 @@ var run = function (){
 		outC = outC + new Date().getTime() + "#" +  currentTime + "#" + bufferedTime + "#" + availablePlaybackTime +"\n";
 		document.getElementById("outC").innerHTML = outC;
 		document.getElementById("outE").innerHTML = outE;
-		console.log("Video outE", outE)
+		//console.log("Video outE", outE)
 		x++;
 		setTimeout(run, 1000);
 	}else {

@@ -8,6 +8,7 @@ import datetime
 import json
 import numpy as np
 import csv
+import os
 
 
 CONFIGFILE = 'config'
@@ -26,7 +27,7 @@ def run_video():
 	
     url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
     
-    url = 'https://video-qoe-app.onrender.com/'
+    url = 'https://video-qoe-app.onrender.com/automation'
     #'https://www.w3.org/2010/05/video/mediaevents.html'
 
 	# set file prefix
@@ -70,7 +71,7 @@ def run_video():
         print ("video playback ended")
         out = browser.execute_script('return document.getElementById("outC").innerHTML;')
         outE = browser.execute_script('return document.getElementById("outE").innerHTML;')
-        print("OUT from js", outE.encode("UTF-8"))
+        #print("OUT from js", outE.encode("UTF-8"))
         with open('results/' + prefix + '_buffer.txt', 'w') as f:
             f.write(out)
         with open('results/' + prefix + '_events.txt', 'w') as f:
@@ -90,7 +91,7 @@ def run_video():
 	
     #display.stop()
 	
-    print(time.time(), 'display stopped')
+
 	
 	# calculate some infos
     # 
@@ -106,8 +107,11 @@ def getOutput(prefix, bitrates):
 	bitrate = calculateBitrate(prefix, bitrates)
 	buffer = calculateBuffer(prefix)
 	stalled = calculateStallings(prefix)
-	print("buffer", buffer)
+	#print("buffer", buffer)
 	out = bitrate + "," + buffer + "," + stalled
+	os.remove("results/" + prefix + "_events.txt")
+	os.remove('results/' + prefix + '_buffer.txt')
+
 	return out
 
 def getEvents(prefix):
