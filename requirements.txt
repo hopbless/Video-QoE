@@ -3,4 +3,5 @@ Flask
 numpy
 pandas
 gunicorn
+selenium
 
