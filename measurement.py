@@ -49,7 +49,7 @@ def run_video():
 	try:
 		print(time.time(), ' start chrome')
 		s = Service(ChromeDriverManager().install())
-		browser = webdriver.Chrome(service=s)
+		browser = webdriver.Chrome(ChromeDriverManager().install())
 		#browser = webdriver.Chrome(desired_capabilities=caps)
 		browser.maximize_window()
 		time.sleep(10)
