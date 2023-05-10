@@ -22,7 +22,7 @@ var init = function (){
 		addEventListeners();
 		
 
-		setTimeout(run, 5000);
+		run();
 
 	} else {
 		setTimeout(init, 1000);

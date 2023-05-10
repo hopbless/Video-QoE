@@ -1,0 +1,3 @@
+﻿,avgBitrate,maxBitrate,minBitrate,q25_bitrate,q50_bitrate,q75_bitrate,q90_bitrate,avgBuffer,maxBuffer,minBuffer,q25_buffer,q50_buffer,q75_buffer,q90_buffer,numOfStallings,avgStalling,maxStalling,minStalling,q25_stalling,q50_stalling,q75_stalling,q90_stalling,score
+0,529.5,529.5,529.5,529.5,529.5,529.5,529.5,23.45813546,47.132334,0,11.62018375,23.4515775,35.28032475,42.3977212,1,0,0,0,0,0,0,0,4.5
+1,529.5,529.5,529.5,529.5,529.5,529.5,529.5,23.48944042,47.129434,0,11.654512,23.4960775,35.31954825,42.4162674,1,0,0,0,0,0,0,0,4.5
