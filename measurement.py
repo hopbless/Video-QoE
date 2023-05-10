@@ -2,13 +2,15 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 import datetime
 import json
 import numpy as np
 import csv
 import os
+import pandas as pd
 
 
 CONFIGFILE = 'config'
@@ -17,88 +19,98 @@ EXPCONFIG = {"ytId":"Q_AeDvbjFsI",
 "bitrates":"144p:110.139,240p:246.425,360p:262.750,480p:529.500,720p:1036.744,1080p:2793.167"
 }
 
+header = ['avgBitrate', 'maxBitrate', 
+	  'minBitrate','q25_bitrate','q50_bitrate', 'q75_bitrate' ,'q90_bitrate',
+	  'avgBuffer','maxBuffer','minBuffer','q25_buffer', 'q50_buffer','q75_buffer','q90_buffer',
+	  'numOfStallings','avgStalling','maxStalling', 'minStalling','q25_stalling','q50_stalling','q75_stalling' ,'q90_stalling']
+
 
 def run_video():
-    print (time.time(), ' start display')
+	print (time.time(), ' start display')
     #display.start()
-    time.sleep(10)
+	time.sleep(10)
 
 	# get url
-	
-    url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
-    
-    url = 'https://video-qoe-app.onrender.com/automation'
+	url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
+	url = 'https://video-qoe-app.onrender.com/automation'
     #'https://www.w3.org/2010/05/video/mediaevents.html'
 
 	# set file prefix
-	
-    ts = time.time()
-	
-    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
-	
-    prefix = "YT_" + EXPCONFIG['ytId'] + '_' + st
+	ts = time.time()
+	st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+	prefix = "YT_" + EXPCONFIG['ytId'] + '_' + st
 
     # define chrome settings
-	
-    caps = DesiredCapabilities.CHROME.copy() 
-    caps['acceptInsecureCerts'] = True
+	caps = DesiredCapabilities.CHROME.copy() 
+	caps['acceptInsecureCerts'] = True
 	#caps["pageLoadStrategy"] = "normal"  #  complete
-    caps["pageLoadStrategy"] = "none"
+	caps["pageLoadStrategy"] = "none"
     
-    try:
-        
-        # start chrome
-        print (time.time(), ' start chrome')
-        browser = webdriver.Chrome(desired_capabilities=caps)
-        time.sleep(10)
+	try:
+		print(time.time(), ' start chrome')
+		s = Service(ChromeDriverManager().install())
+		browser = webdriver.Chrome(service=s)
+		#browser = webdriver.Chrome(desired_capabilities=caps)
+		browser.maximize_window()
+		time.sleep(10)
 
-        # read in js
-        jsFile = open('opt/pluginAsJS.js', 'r')
-        js = jsFile.read()
-        jsFile.close
+			# read in js
+		jsFile = open('opt/pluginAsJS.js', 'r')
+		js = jsFile.read()
+		jsFile.close
 
-        # open webpage
-        print (time.time(), ' start video ', EXPCONFIG['ytId'])
-        browser.get(url)
-        browser.get_screenshot_as_file('results/screenshot0.png')
+			# open webpage
+		print (time.time(), ' start video ', EXPCONFIG['ytId'])
+		browser.get(url)
+		browser.get_screenshot_as_file('results/screenshot0.png')
 
-        # inject js
-        browser.execute_script(js)
-        duration = EXPCONFIG['duration']
-        time.sleep(duration)
-        
-        # get infos from js and write to file
-        print ("video playback ended")
-        out = browser.execute_script('return document.getElementById("outC").innerHTML;')
-        outE = browser.execute_script('return document.getElementById("outE").innerHTML;')
-        #print("OUT from js", outE.encode("UTF-8"))
-        with open('results/' + prefix + '_buffer.txt', 'w') as f:
-            f.write(out)
-        with open('results/' + prefix + '_events.txt', 'w') as f:
-            f.write(outE)
-            
-        # close browser
-        browser.close()
-        print (time.time(), ' finished chrome')
-    except Exception as e:
-        print (time.time(), ' exception thrown')
-        print (e)
-        ts = time.time()
-        st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
-        print(st)
+			# inject js
+		browser.execute_script(js)
+		duration = EXPCONFIG['duration']
+		time.sleep(duration)
+			
+			# get infos from js and write to file
+		print ("video playback ended")
+		out = browser.execute_script('return document.getElementById("outC").innerHTML;')
+		outE = browser.execute_script('return document.getElementById("outE").innerHTML;')
+			#print("OUT from js", outE.encode("UTF-8"))
+		with open('results/' + prefix + '_buffer.txt', 'w') as f:
+				f.write(out)
+
+		with open('results/' + prefix + '_events.txt', 'w') as f:
+				f.write(outE)
+					
+				# close browser
+		browser.close()
+		print (time.time(), ' finished chrome')
+	    
+	except Exception as e:
+			print(time.time(), ' exception thrown')
+			print(e)
+			ts = time.time()
+			st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+			print(st)
+		
+			# stop display
+			
+			#display.stop()
+			
+
+	bitrates = EXPCONFIG['bitrates'].split(",")
+
+	# with open('data/streams.csv', 'w') as file:
+	# 	writer = csv.writer(file, delimiter=",")
+	# 	writer.writerow(header)
+	# 	writer.writerow([getOutput(prefix, bitrates)])
+
+	with open('_outStream.txt', 'w') as f:
+		f.write(getOutput(prefix, bitrates))
 	
-	# stop display
-	
-    #display.stop()
+	df = pd.read_csv('_outStream.txt',names=header, sep=',', header=None)
+	df.to_csv('data/streams.csv')
 	
 
-	
-	# calculate some infos
-    # 
-    bitrates = EXPCONFIG['bitrates'].split(",")
-    with open('_outStream.txt', 'w') as f:
-        f.write(getOutput(prefix, bitrates))
-    return
+	return
 
 
 # Calculate average, max, min, 25-50-75-90 quantiles of the following: bitrate [KB], buffer [s], number of stalls, duration of stalls

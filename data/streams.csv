@@ -1,0 +1,2 @@
+avgBitrate,maxBitrate,minBitrate,q25_bitrate,q50_bitrate,q75_bitrate,q90_bitrate,avgBuffer,maxBuffer,minBuffer,q25_buffer,q50_buffer,q75_buffer,q90_buffer,numOfStallings,avgStalling,maxStalling,minStalling,q25_stalling,q50_stalling,q75_stalling,q90_stalling
+"529.5,529.5,529.5,529.5,529.5,529.5,529.5,23.285955437500007,46.922324,0.0,11.424367500000004,23.295118000000002,35.15992725000001,42.21658250000001,1,0.0,0,0,0.0,0.0,0.0,0.0"

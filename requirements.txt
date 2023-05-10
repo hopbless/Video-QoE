@@ -4,4 +4,5 @@ numpy
 pandas
 gunicorn
 selenium==3.141.0
+webdriver-manager
 
