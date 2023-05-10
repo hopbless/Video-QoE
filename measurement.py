@@ -7,6 +7,7 @@ import time
 import datetime
 import json
 import numpy as np
+import csv
 
 
 CONFIGFILE = 'config'
@@ -100,6 +101,7 @@ def run_video():
 
 
 # Calculate average, max, min, 25-50-75-90 quantiles of the following: bitrate [KB], buffer [s], number of stalls, duration of stalls
+
 def getOutput(prefix, bitrates):
 	bitrate = calculateBitrate(prefix, bitrates)
 	buffer = calculateBuffer(prefix)

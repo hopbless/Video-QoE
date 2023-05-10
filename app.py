@@ -17,7 +17,7 @@ def home():
 
 @app.route("/automation", methods= ['GET', 'POST'])
 def play():
-    return render_template("video.html")
+    return render_template("video_player.html")
 
 #run_video()
 
