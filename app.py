@@ -12,12 +12,15 @@ app = Flask(__name__, template_folder='templates')
 def home():
     return render_template("index.html")
 
-#measurement.run_video()
 
 
-# @app.route("/automation", methods= ['GET', 'POST'])
-# def play():
-#     return render_template("index.html")
+
+@app.route("/automation", methods= ['GET', 'POST'])
+def play():
+    return render_template("video.html")
+
+#run_video()
+
 
 if __name__ == "__main__":
     app.run()
