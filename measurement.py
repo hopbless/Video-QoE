@@ -122,8 +122,8 @@ def getOutput(prefix, bitrates):
 	stalled = calculateStallings(prefix)
 	#print("buffer", buffer)
 	out = bitrate + "," + buffer + "," + stalled
-	# os.remove("results/" + prefix + "_events.txt")
-	# os.remove('results/' + prefix + '_buffer.txt')
+	os.remove("results/" + prefix + "_events.txt")
+	os.remove('results/' + prefix + '_buffer.txt')
 
 	return out
 

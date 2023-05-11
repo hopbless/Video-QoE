@@ -11,10 +11,10 @@ import pickle as pk
 
 app = Flask(__name__, template_folder='templates')
 
-hope =""
-qoeResult =0
+# result =""
+# qoeResult =0
 
-@app.route("/", methods=["GET","POST"])
+@app.route("/", methods =["POST", "GET"])
 def home():
     if flask.request == "POST":
         result = "Hope"
@@ -38,9 +38,16 @@ def record_data():
     run_video()
     return render_template("about.html")
 
-@app.route("/about", methods =["POST", "GET"])
-def about_page():
-    render_template("about.html", hope = "Result")
+@app.route("/predict", methods =["POST"])
+def predict():
+    qoe = request.form.get("qoe")
+    global result
+    global qoeResult
+    result = qoe 
+    qoeResult = predictQoE()
+    print("prediction", qoeResult)
+
+    return redirect('/', result, qoeResult)
 
 
 def predictQoE():
