@@ -6,4 +6,5 @@ gunicorn
 selenium==3.141.0
 webdriver-manager
 urllib3>=1.26.15,<2
+pyppeteer
 
