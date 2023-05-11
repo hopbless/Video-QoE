@@ -32,7 +32,7 @@ def run_video():
 
 	# get url
 	url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
-	url = 'https://video-qoe-app.onrender.com/measurement'
+	url = 'https://www.w3.org/2010/05/video/mediaevents.html'
     #'https://www.w3.org/2010/05/video/mediaevents.html'
 
 	# set file prefix
@@ -48,8 +48,9 @@ def run_video():
     
 	try:
 		print(time.time(), ' start chrome')
-		s = Service(ChromeDriverManager().install())
-		browser = webdriver.Chrome(ChromeDriverManager().install(), desired_capabilities=caps)
+		#s = Service(ChromeDriverManager().install())
+		service = Service(executable_path="chromedriver.exe")
+		browser = webdriver.Chrome(service=service, desired_capabilities=caps)
 		#browser = webdriver.Chrome(desired_capabilities=caps)
 		browser.maximize_window()
 		time.sleep(10)
