@@ -14,16 +14,10 @@ app = Flask(__name__, template_folder='templates')
 # result =""
 # qoeResult =0
 
-@app.route("/", methods =["POST", "GET"])
+@app.route("/")
 def home():
-    if flask.request == "POST":
-        result = "Hope"
-        qoeResult = predictQoE()
-        print("Result", qoeResult)
-    else:
-        result =""
-        qoeResult=0
-    return render_template("index.html", hope=result, qoe= qoeResult )
+
+    return render_template("index.html")
 
 
 
@@ -38,16 +32,21 @@ def record_data():
     run_video()
     return render_template("about.html")
 
+
 @app.route("/predict", methods =["POST"])
 def predict():
-    qoe = request.form.get("qoe")
-    global result
+    global user_mos
+    user_mos = request.form.get("mos")
     global qoeResult
-    result = qoe 
     qoeResult = predictQoE()
-    print("prediction", qoeResult)
+    print("prediction", qoeResult, user_mos)
 
-    return redirect('/', result, qoeResult)
+    return redirect('/result', qoeResult)
+
+@app.route("/result")
+def result():
+    return render_template("predict_page.html", qoe=qoeResult, hope=user_mos)
+
 
 
 def predictQoE():
@@ -56,16 +55,17 @@ def predictQoE():
         svr_model = pk.load(file)
 
     df = pd.read_csv("data/streams.csv", header=0)
-    df.head()
-    X = df.loc[:, df.columns != "score"]
+   
+    X = df.loc[:, df.columns != "Unnamed: 0"]
     type(X)
-    y = df["score"]
-    type(y)
+
     scaler = StandardScaler()
     x_std = scaler.fit_transform(X)
     qoeResult = svr_model.predict(x_std)
+    qoeResult = np.round(qoeResult, 2)
+    qoe_result = str(qoeResult)
 
-    return qoeResult
+    return qoe_result
 
 
 

@@ -15,7 +15,7 @@ import pandas as pd
 
 CONFIGFILE = 'config'
 EXPCONFIG = {"ytId":"Q_AeDvbjFsI",
-"duration":60,
+"duration":90,
 "bitrates":"144p:110.139,240p:246.425,360p:262.750,480p:529.500,720p:1036.744,1080p:2793.167"
 }
 
@@ -141,9 +141,12 @@ def getEvents(prefix):
 				qualities.append(quality)
 			if ("ended" in currentline[1]):
 				endtime = float(currentline[0])
+
 	if 'endtime' not in locals():
 		[times, playtime, buffertime, avPlaytime] = getBuffer(prefix)
-		endtime = times[-1]
+		endtime = int(time.time() * 1000)
+		print("endtime", endtime)
+
 	return [timestamps, qualities, endtime]
 
 
@@ -179,6 +182,7 @@ def calculateBitrate(prefix, bitrates):
 	for x in range(0,len(qualities)):
 		index = [i for i, j in enumerate(bitrates) if qualities[x] in j]
 		currRate = float(bitrates[index[0]].split(":")[1])
+		print("current rate", currRate)
 		usedBitrates.extend([currRate] * periods[x])
 		
 	avgBitrate = sum(usedBitrates)/len(usedBitrates)

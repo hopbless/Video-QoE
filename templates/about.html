@@ -27,9 +27,26 @@
 		}
 	</style>
 
+	     <!-- Navbar -->
+		 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">Mos QoE Test Bed</a>
+			<button class="navbar-toggler" type="button"  data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			  <span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+			  <ul class="navbar-nav">
+				<li class="nav-item">
+				  <a class="nav-link active" href="/">Home</a>
+				</li>
+			  </ul>
+			</div>
+		  </nav>
+
+		  <br></br>
+
 	<h2>Please enter your Mean Opinion socre based on the quality of the video stream you just watched.</h2>
 
-	<form action="/" method="post">
+	<form action="/predict" method="post">
         <div class="banner">
           <h4>SVM Inference</h4>
         </div>
@@ -39,7 +56,7 @@
           <input id="mos" type="number" min="1" max="5" name="mos" placeholder="Enter MoS in the range of 1 to 5" required/>
         </div>
 		<div class="btn-block">
-			<button type="predict" value = "Predict" href="/">Predict QoE</button>
+			<button type="predict" value = "Predict" href="/predict">Predict QoE</button>
 		</div>
 	</form>
 
