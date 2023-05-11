@@ -4,18 +4,26 @@ from flask import Flask, render_template, request, redirect
 from measurement import run_video
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+import pickle as pk
 
 
 
 
 app = Flask(__name__, template_folder='templates')
 
+hope =""
+qoeResult =0
 
 @app.route("/", methods=["GET","POST"])
 def home():
-    result = "Hope"
-
-    return render_template("index.html", hope=result)
+    if flask.request == "POST":
+        result = "Hope"
+        qoeResult = predictQoE()
+        print("Result", qoeResult)
+    else:
+        result =""
+        qoeResult=0
+    return render_template("index.html", hope=result, qoe= qoeResult )
 
 
 
@@ -36,15 +44,22 @@ def about_page():
 
 
 def predictQoE():
-    
-    df = pd.read_csv("data/training_data.csv", header=0)
+
+    with open('svr_model.pkl','rb') as file:
+        svr_model = pk.load(file)
+
+    df = pd.read_csv("data/streams.csv", header=0)
+    df.head()
     X = df.loc[:, df.columns != "score"]
     type(X)
     y = df["score"]
     type(y)
     scaler = StandardScaler()
     x_std = scaler.fit_transform(X)
-    y_pred = svr_model.predict(X_train)
+    qoeResult = svr_model.predict(x_std)
+
+    return qoeResult
+
 
 
 
