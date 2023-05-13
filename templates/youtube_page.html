@@ -1,9 +1,17 @@
 
-		
-		var player;
-		
+{% extends "layout.html" %}
+{% block body %}
+    <script>
+        	
+
+
+        var player;
+		var main
+
+
+
 		function onYouTubeIframeAPIReady() {
-			//'use strict';
+			'use strict';
 		
 			var inputVideoId = document.getElementById('YouTube-video-id');
 			var videoId = inputVideoId.value;
@@ -11,6 +19,8 @@
 			var height = 390;
 			var width = 640;
 			var youTubePlayerVolumeItemId = 'YouTube-player-volume';
+
+
 		
 		
 			function onError(event) {
@@ -25,8 +35,12 @@
 									  videoId: videoId
 									 });
 				
-				YTplayer.playVideo();
+				YTplayer.pauseVideo();
+				recordData = 0;
 				run();
+				console.log("video ID: ", videoId)
+				
+				
 				youTubePlayerDisplayFixedInfos();
 			}
 		
@@ -44,33 +58,39 @@
 					var infos = event;
 					let infoData = event.data
 					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+
 		
 				}else if (event.data == YT.PlayerState.ENDED){
 					var currentTime = new Date().getTime();
+			
 					var infos = event;
 					let infoData = event.data
 					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					
 		
 				}else if (event.data == YT.PlayerState.PAUSED){
 					var currentTime = new Date().getTime();
 					var infos = event;
 					let infoData = event.data
 					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					
 		
 				}else if (event.data == YT.PlayerState.BUFFERING){
 					var currentTime = new Date().getTime();
+
 					var infos = event;
 					let infoData = event.data
 					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
 		
 				}else if (event.data == YT.PlayerState.CUED){
 					var currentTime = new Date().getTime();
+
 					var infos = event;
 					let infoData = event.data
 					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
 				
-				};
-			}
+				}
+			};
 
 			function onPlayerPlaybackQualityChange(event){
 				var currentTime = new Date().getTime();
@@ -79,17 +99,16 @@
 				outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
 
 			}
-		
-		
-			player = new YT.Player('YouTube-player',
+				
+			player = new YT.Player('player',
 										  {videoId: videoId,
 										   height: height,
 										   width: width,
 										   playerVars: {'autohide': 0,
 														'cc_load_policy': 0,
-														'controls': 2,
+														'controls': 0,
 														'disablekb': 1,
-														'autoplay' : 1,
+														'autoplay' : 0,
 														'iv_load_policy': 3,
 														'modestbranding': 1,
 														'rel': 0,
@@ -118,38 +137,52 @@
 		
 
 		function run(){
+			
+			var record = recordData
+			console.log("record?", recordData)
 			getInfos();
 
-		if (x <= 3600){
+			if (x <= 3600 && record){
 
-			var currentPlayTime = player.getCurrentTime();
-			//var i = player.buffered.length;
-			var availablePlaybackTime = player.getDuration();
-			var bufferedTime = availablePlaybackTime - currentPlayTime;
-			var percentBufferedVideo = (player.getVideoLoadedFraction() * 100).toFixed(1)
-			outC = outC + new Date().getTime() + "#" +  currentPlayTime + "#" + bufferedTime + "#" + availablePlaybackTime + "#" + percentBufferedVideo + "\n";
-			document.getElementById("outC").innerHTML = outC;
-			document.getElementById("outE").innerHTML = outE;
-			//console.log("Video outE", outE)
-			x++;
-			setTimeout(run, 1000);
-		}else {
-		}
+				var currentPlayTime = player.getCurrentTime();
+				//var i = player.buffered.length;
+				var availablePlaybackTime = player.getDuration();
+				var bufferedTime = availablePlaybackTime - currentPlayTime;
+				var percentBufferedVideo = (player.getVideoLoadedFraction() * 100).toFixed(1)
+				outC = outC + new Date().getTime() + "#" +  currentPlayTime + "#" + bufferedTime + "#" + availablePlaybackTime + "#" + percentBufferedVideo + "\n";
+				document.getElementById("outC").innerHTML = outC;
+				document.getElementById("outE").innerHTML = outE;
+				//console.log("Video outE", outE)
+				x++;
+				setTimeout(run, 1000);
+			}else {
+			}
 
 		};
 
+
+
 		function getInfos(){
 			var currentTime = new Date().getTime();
+			inputVideoId = document.getElementById('YouTube-video-id');
 		
-			var infos = "quality:"+ suggestedQuality ;
-			outE = outE + currentTime + "#" + infos + "\n";
+			if(playQuality !=  player.getPlaybackQuality()){
+				playQuality = player.getPlaybackQuality();
+				var infos = "quality:"+ playQuality;
+				outE =  outE + currentTime + "#" + infos + "\n";
+			}
 
-			var infos = videoId.value;
-			outE = outE + currentTime + "#" + infos + "\n";
+			if(ytId != inputVideoId){
+				inputVideoId = document.getElementById('YouTube-video-id');
+				var infos = inputVideoId.value;
+				outE =   outE + currentTime + "#" + infos + "\n";
+			}
 
-			
-			var infos = player.getDuration;
-			outE = outE + currentTime + "#" + infos + "\n";
+			if(duration != player.getDuration()){
+				duration = player.getDuration();	
+				var infos = duration;
+				outE = outE + currentTime + "#" + infos + "\n";
+			}
   
 	
 		};
@@ -161,9 +194,10 @@
 			var videoId = inputVideoId.value;
 		
 			player.loadVideoById({'videoId': videoId});
-			player.playVideo();
-
-			run()
+			player.pauseVideo();
+			recordData = 0;
+			run();
+			
 			youTubePlayerDisplayFixedInfos();
 		}
 
@@ -240,6 +274,8 @@
 		
 			if (playerActive()) {
 				player.pauseVideo();
+				recordData = 0;
+				run();
 			}
 		}
 
@@ -251,8 +287,12 @@
 
 			if (playerActive()) {
 				player.playVideo();
+				recordData = 1;
+				run();
 			}
 		}
+
+
 
 		function youTubePlayerStateValueToDescription(state, unknow) {
 			//'use strict';
@@ -274,6 +314,8 @@
 		
 			if (playerActive()) {
 				player.stopVideo();
+				recordData = 0;
+				run();
 				player.clearVideo();
 			}
 		}
@@ -286,30 +328,100 @@
 			}
 		}
 
+		var x = 0;
+		var outC = ""; 
+		var outE = "";
+		var playQuality = "";
+		var ytId = "";
+		var duration = 0;
+		var recordData = 0;
 
-		(function () {
-			//'use strict';
 
-		
-			function init() {
-				// Load YouTube library
-				var tag = document.createElement('script');
-		
-				tag.src = 'https://www.youtube.com/iframe_api';
-		
-				var first_script_tag = document.getElementsByTagName('script')[0];
-		
-				first_script_tag.parentNode.insertBefore(tag, first_script_tag);
-		
-		
-				// Set timer to display infos
-				setInterval(youTubePlayerDisplayInfos, 1000);
-			}
-		
-		
-			if (window.addEventListener) {
-				window.addEventListener('load', init);
-			} else if (window.attachEvent) {
-				window.attachEvent('onload', init);
-			}
-		}());
+        (function () {
+            'use strict';
+
+            function init() {
+                // Load YouTube library
+                var tag = document.createElement('script');
+
+                tag.src = 'https://www.youtube.com/iframe_api';
+
+                var first_script_tag = document.getElementsByTagName('script')[0];
+
+                first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+
+                
+				var divOutC = document.createElement("div");
+                divOutC.id = "outC";
+                main = document.getElementsByTagName("main")[0];
+                main.appendChild(divOutC);
+                var divOutE = document.createElement("div");
+                divOutE.id = "outE";
+                main.appendChild(divOutE);
+                var inputVideoId = document.getElementById('YouTube-video-id').value;
+                var quality = 'hd720'
+
+
+                // Set timer to display infos
+                setInterval(youTubePlayerDisplayInfos, 1000);
+            }
+
+
+            if (window.addEventListener) {
+                window.addEventListener('load', init);
+            } else if (window.attachEvent) {
+                window.attachEvent('onload', init);
+            }
+        }());               
+
+    </script>
+
+        <main>
+            <section>
+            <div class="center">
+                <h2>YouTube <code>iframe</code> embed</h2>
+        
+                <div id="player"></div>
+        
+                <div>
+                <span class="nowrap">
+                    <button onclick="document.getElementById('YouTube-video-id').value='yG0oBPtyNb0'; youTubePlayerChangeVideoId();" title="In the summertime (Mungo Jerry)">1</button>
+                    <button onclick="document.getElementById('YouTube-video-id').value='F2Ug3VkFuDw'; youTubePlayerChangeVideoId();" title="Peter Popoff pris la main dans le sac par James Randi">2</button>
+                    <button onclick="document.getElementById('YouTube-video-id').value='1X9RvuSuU_Y'; youTubePlayerChangeVideoId();" title="The Steven Seagal Show #002">3</button>
+                    <button onclick="document.getElementById('YouTube-video-id').value='LHdsMXEwLNE'; youTubePlayerChangeVideoId();" title="The Man from Earth (Richard Schenkman)">4</button>
+                </span>
+        
+                <span class="nowrap margin-left-m margin-right-m">
+                    <label for="YouTube-video-id">videoId</label>:
+                    <input id="YouTube-video-id" type="text" value="yG0oBPtyNb0" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+                </span>
+        
+                <span class="nowrap">
+                    <button onclick="youTubePlayerPlay();">Play</button>
+                    <button onclick="youTubePlayerPause();">Pause</button>
+                    <button onclick="youTubePlayerStop();">Stop</button>
+                </span>
+                </div>
+        
+                <!-- <div>
+                <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
+                <label for="YouTube-player-progress">duration</label>
+                </div> -->
+        <!--   
+                <div>
+                <input id="YouTube-player-volume" type="range" value="50" min="0" max="100" onchange="youTubePlayerVolumeChange(this.value);">
+                <label for="YouTube-player-volume">volume</label>
+                </div>
+            </div> -->
+        
+            <div class="framed">
+                <div id="YouTube-player-infos"></div>
+                <div id="YouTube-player-errors"></div>
+                <div id="YouTube-player-fixed-infos"></div>
+            </div>
+            </section>
+
+        </main>
+{% endblock %}
+          
+

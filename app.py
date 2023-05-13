@@ -26,6 +26,10 @@ def home():
 def play():
     return render_template("video_player.html")
 
+@app.route("/youtube-player", methods= ['GET', 'POST'])
+def youTubePlayer():
+    return render_template("youtube_page.html")
+
 
 @app.route("/measurement", methods =["GET", "POST"])
 def record_data():
@@ -42,6 +46,7 @@ def predict():
     print("prediction", qoeResult, user_mos)
 
     return redirect('/result', qoeResult)
+
 
 @app.route("/result")
 def result():

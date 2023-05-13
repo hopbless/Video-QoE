@@ -1,0 +1,119 @@
+
+{% extends "layout.html" %}
+{% block body %}
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+
+        // player = new YT.Player('player', {
+        //   height: '390',
+        //   width: '640',
+        //   videoId: 'M7lc1UVf-VE',
+        //   playerVars: {
+        //     'playsinline': 1
+        //   },
+        //   events: {
+        //     'onReady': onPlayerReady,
+        //     'onStateChange': onPlayerStateChange
+        //   }
+        // });
+        {videoId: videoId,
+										   height: height,
+										   width: width,
+										   playerVars: {'autohide': 0,
+														'cc_load_policy': 0,
+														'controls': 2,
+														'disablekb': 1,
+														'autoplay' : 1,
+														'iv_load_policy': 3,
+														'modestbranding': 1,
+														'rel': 0,
+														'showinfo': 0,
+														'enablejsapi' : 1
+													   },
+										   events: {'onError': onError,
+													'onReady': onPlayerReady,
+													'onStateChange': onPlayerStateChange,
+													'onPlaybackQualityChange': onPlayerPlaybackQualityChange
+												   }
+										  });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+    </script>
+     <main>
+        <section>
+        <div class="center">
+            <h2>YouTube <code>iframe</code> embed</h2>
+    
+            <div id="player"></div>
+    
+            <div>
+            <span class="nowrap">
+                <button onclick="document.getElementById('YouTube-video-id').value='yG0oBPtyNb0'; youTubePlayerChangeVideoId();" title="In the summertime (Mungo Jerry)">1</button>
+                <button onclick="document.getElementById('YouTube-video-id').value='F2Ug3VkFuDw'; youTubePlayerChangeVideoId();" title="Peter Popoff pris la main dans le sac par James Randi">2</button>
+                <button onclick="document.getElementById('YouTube-video-id').value='1X9RvuSuU_Y'; youTubePlayerChangeVideoId();" title="The Steven Seagal Show #002">3</button>
+                <button onclick="document.getElementById('YouTube-video-id').value='LHdsMXEwLNE'; youTubePlayerChangeVideoId();" title="The Man from Earth (Richard Schenkman)">4</button>
+            </span>
+    
+            <span class="nowrap margin-left-m margin-right-m">
+                <label for="YouTube-video-id">videoId</label>:
+                <input id="YouTube-video-id" type="text" value="yG0oBPtyNb0" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+            </span>
+    
+            <span class="nowrap">
+                <button onclick="youTubePlayerPlay();">Play</button>
+                <button onclick="youTubePlayerPause();">Pause</button>
+                <button onclick="youTubePlayerStop();">Stop</button>
+            </span>
+            </div>
+    
+            <!-- <div>
+            <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
+            <label for="YouTube-player-progress">duration</label>
+            </div> -->
+    <!--   
+            <div>
+            <input id="YouTube-player-volume" type="range" value="50" min="0" max="100" onchange="youTubePlayerVolumeChange(this.value);">
+            <label for="YouTube-player-volume">volume</label>
+            </div>
+        </div> -->
+    
+        <div class="framed">
+            <div id="YouTube-player-infos"></div>
+            <div id="YouTube-player-errors"></div>
+            <div id="YouTube-player-fixed-infos"></div>
+        </div>
+        </section>
+
+    </main>
+{% endblock %}
