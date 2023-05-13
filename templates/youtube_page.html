@@ -373,52 +373,64 @@
 
     </script>
 
-        <main>
-            <section>
-            <div class="center">
-                <h2>YouTube <code>iframe</code> embed</h2>
-        
-                <div id="player"></div>
-        
-                <div>
-                <span class="nowrap">
-                    <button onclick="document.getElementById('YouTube-video-id').value='yG0oBPtyNb0'; youTubePlayerChangeVideoId();" title="In the summertime (Mungo Jerry)">1</button>
-                    <button onclick="document.getElementById('YouTube-video-id').value='F2Ug3VkFuDw'; youTubePlayerChangeVideoId();" title="Peter Popoff pris la main dans le sac par James Randi">2</button>
-                    <button onclick="document.getElementById('YouTube-video-id').value='1X9RvuSuU_Y'; youTubePlayerChangeVideoId();" title="The Steven Seagal Show #002">3</button>
-                    <button onclick="document.getElementById('YouTube-video-id').value='LHdsMXEwLNE'; youTubePlayerChangeVideoId();" title="The Man from Earth (Richard Schenkman)">4</button>
-                </span>
-        
-                <span class="nowrap margin-left-m margin-right-m">
-                    <label for="YouTube-video-id">videoId</label>:
-                    <input id="YouTube-video-id" type="text" value="yG0oBPtyNb0" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
-                </span>
-        
-                <span class="nowrap">
-                    <button onclick="youTubePlayerPlay();">Play</button>
-                    <button onclick="youTubePlayerPause();">Pause</button>
-                    <button onclick="youTubePlayerStop();">Stop</button>
-                </span>
-                </div>
-        
-                <!-- <div>
-                <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
-                <label for="YouTube-player-progress">duration</label>
-                </div> -->
-        <!--   
-                <div>
-                <input id="YouTube-player-volume" type="range" value="50" min="0" max="100" onchange="youTubePlayerVolumeChange(this.value);">
-                <label for="YouTube-player-volume">volume</label>
-                </div>
-            </div> -->
-        
-            <div class="framed">
-                <div id="YouTube-player-infos"></div>
-                <div id="YouTube-player-errors"></div>
-                <div id="YouTube-player-fixed-infos"></div>
-            </div>
-            </section>
+	<!-- Hero section -->
+<section class="hero-section">
+	<div class="container">
+	  <div class="row justify-content-center">
+		<div class="col-md-6 text-center">
+			<main class="center">
+				<section>
+				<div class="center">
+					<h2>YouTube Video <code>QoE</code> TestBed</h2>
+			
+					<div id="player"></div>
+			
+					<div>
+					<span class="nowrap">
+						<button onclick="document.getElementById('YouTube-video-id').value='IpNG4ohSUkI'; youTubePlayerChangeVideoId();" title="Loneliness | Short Film | 60 Seconds">1</button>
+						<button onclick="document.getElementById('YouTube-video-id').value='e-cI1eSX4P0'; youTubePlayerChangeVideoId();" title="Change Your Focus | 60 Second Short Film">2</button>
+						<button onclick="document.getElementById('YouTube-video-id').value='rMPkUuMq024'; youTubePlayerChangeVideoId();" title="The Steven Seagal Show #002">3</button>
+						<button onclick="document.getElementById('YouTube-video-id').value='aPMmEPCX_Rs'; youTubePlayerChangeVideoId();" title="Filmriot/Filmstro 1 Minute Short Film Contest">4</button>
+						<button onclick="document.getElementById('YouTube-video-id').value='tiEPqs4aQEc'; youTubePlayerChangeVideoId();" title="DARK PASSAGE - One Minute Horror Short Film | Winner at RAINDANCE FILM FESTIVAL">5</button>
+					</span>
+			
+					<span class="nowrap margin-left-m margin-right-m">
+						<label for="YouTube-video-id">videoId</label>:
+						<input id="YouTube-video-id" type="text" value="IpNG4ohSUkI" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+					</span>
+			
+					<span class="nowrap">
+						<button onclick="youTubePlayerPlay();">Play/QoE</button>
+						<button onclick="youTubePlayerPause();">Pause</button>
+						<button onclick="youTubePlayerStop();">Stop</button>
+					</span>
+					</div>
+			
+					<div>
+						<input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
+						<label for="YouTube-player-progress">duration</label>
+					</div> 
+			
+					<div>
+						<input id="YouTube-player-volume" type="range" value="50" min="0" max="100" onchange="youTubePlayerVolumeChange(this.value);">
+						<label for="YouTube-player-volume">volume</label>
+					</div>
+				</div>
+			
+				<div class="framed">
+					<div id="YouTube-player-infos"></div>
+					<div id="YouTube-player-errors"></div>
+					<div id="YouTube-player-fixed-infos"></div>
+				</div>
+				</section>
+	
+			</main>
+		</div>
+	  </div>
+  
+  </section>
 
-        </main>
+        
 {% endblock %}
           
 

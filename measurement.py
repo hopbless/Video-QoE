@@ -192,13 +192,13 @@ def calculateBitrate(prefix, bitrates):
 		
 	usedBitrates = []	
 	#qualities = qualities.remove("undefined")
-	print("qualityChange:", qualityChange)
-	print("quality:", qualities)
+	#print("qualityChange:", qualityChange)
+	#print("quality:", qualities)
 	
 	for x in range(0,len(qualityChange)):
 		index = [i for i, j in enumerate(bitrates) if qualityChange[x] in j]
 		currRate = float(bitrates[index[0]].split(":")[1])
-		print("current rate", currRate)
+		#print("current rate", currRate)
 		usedBitrates.extend([currRate] * periods[x])
 		
 	avgBitrate = sum(usedBitrates)/len(usedBitrates)
@@ -211,7 +211,10 @@ def calculateBitrate(prefix, bitrates):
 	return str(avgBitrate) + "," + str(maxBitrate) + "," + str(minBitrate) + "," + str(q25) + "," + str(q50) + "," + str(q75) + "," + str(q90)
 
 def calculateBuffer(prefix):
-	[timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)	
+	[timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)
+
+	#print("buffers: ", buffertime)	
+	
 	avgBuffer = sum(buffertime)/len(buffertime)
 	maxBuffer = max(buffertime)
 	minBuffer = min(buffertime)
@@ -223,7 +226,7 @@ def calculateBuffer(prefix):
 
 def calculateStallings(prefix):
 	[timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)
-	print("timestamp: ", timestamps)
+	#print("timestamp: ", timestamps)
 	diffTimestamps = np.diff(timestamps)/1000
 	diffPlaytime = np.diff(playtime)
 
