@@ -15,9 +15,11 @@ import pandas as pd
 
 CONFIGFILE = 'config'
 EXPCONFIG = {"ytId":"Q_AeDvbjFsI",
-"duration":90,
-"bitrates":"144p:110.139,240p:246.425,360p:262.750,480p:529.500,720p:1036.744,1080p:2793.167"
+"duration":60,
+"bitrates":"tiny:110.139,small:246.425,medium:262.750,large:529.500,hd720:1036.744,hd1080:2793.167"
 }
+
+#"bitrates":"144p:110.139,240p:246.425,360p:262.750,480p:529.500,720p:1036.744,1080p:2793.167"
 
 header = ['avgBitrate', 'maxBitrate', 
 	  'minBitrate','q25_bitrate','q50_bitrate', 'q75_bitrate' ,'q90_bitrate',
@@ -130,6 +132,9 @@ def getOutput(prefix, bitrates):
 def getEvents(prefix):
 	timestamps = []
 	qualities = []
+	qualityChange = []
+	bufferings = []
+	buffering_count = 0
 	with open('results/' + prefix + "_events.txt", "r") as filestream:
 		for line in filestream:
 			currentline = line.split("#")
@@ -141,13 +146,19 @@ def getEvents(prefix):
 				qualities.append(quality)
 			if ("ended" in currentline[1]):
 				endtime = float(currentline[0])
+			if("playQualityChange" in currentline[1]):
+				playQualityChange = str(currentline[1])
+				playQualityChange = playQualityChange.split(":")[1]
+				qualityChange.append(playQualityChange)
+			if("buffering" in currentline[1]):
+				buffering_count +=buffering_count 
+				bufferings.append(buffering_count)
 
 	if 'endtime' not in locals():
-		[times, playtime, buffertime, avPlaytime] = getBuffer(prefix)
+		[times, playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)
 		endtime = int(time.time() * 1000)
-		print("endtime", endtime)
 
-	return [timestamps, qualities, endtime]
+	return [timestamps, qualities, qualityChange, bufferings, endtime] 
 
 
 def getBuffer(prefix):
@@ -172,7 +183,7 @@ def getBuffer(prefix):
 	return [timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo]
 
 def calculateBitrate(prefix, bitrates):
-	[timestamps, qualities, endtime] = getEvents(prefix)
+	[timestamps, qualities, qualityChange, bufferings, endtime] = getEvents(prefix)
 	timestamps.append(endtime)
 	periods = [x / 1000 for x in timestamps]
 	periods = np.diff(periods)
@@ -180,9 +191,12 @@ def calculateBitrate(prefix, bitrates):
 	periods = [int(i) for i in periods]
 		
 	usedBitrates = []	
+	#qualities = qualities.remove("undefined")
+	print("qualityChange:", qualityChange)
+	print("quality:", qualities)
 	
-	for x in range(0,len(qualities)):
-		index = [i for i, j in enumerate(bitrates) if qualities[x] in j]
+	for x in range(0,len(qualityChange)):
+		index = [i for i, j in enumerate(bitrates) if qualityChange[x] in j]
 		currRate = float(bitrates[index[0]].split(":")[1])
 		print("current rate", currRate)
 		usedBitrates.extend([currRate] * periods[x])
@@ -197,7 +211,7 @@ def calculateBitrate(prefix, bitrates):
 	return str(avgBitrate) + "," + str(maxBitrate) + "," + str(minBitrate) + "," + str(q25) + "," + str(q50) + "," + str(q75) + "," + str(q90)
 
 def calculateBuffer(prefix):
-	[timestamps , playtime, buffertime, avPlaytime] = getBuffer(prefix)	
+	[timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)	
 	avgBuffer = sum(buffertime)/len(buffertime)
 	maxBuffer = max(buffertime)
 	minBuffer = min(buffertime)
@@ -208,7 +222,8 @@ def calculateBuffer(prefix):
 	return str(avgBuffer) + "," + str(maxBuffer) + "," + str(minBuffer) + "," + str(q25) + "," + str(q50) + "," + str(q75) + "," + str(q90) 
 
 def calculateStallings(prefix):
-	[timestamps , playtime, buffertime, avPlaytime] = getBuffer(prefix)
+	[timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo] = getBuffer(prefix)
+	print("timestamp: ", timestamps)
 	diffTimestamps = np.diff(timestamps)/1000
 	diffPlaytime = np.diff(playtime)
 
