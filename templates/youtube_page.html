@@ -55,48 +55,44 @@
 
 				if (event.data == YT.PlayerState.PLAYING) {
 					var currentTime = new Date().getTime();
-					var infos = event;
-					let infoData = event.data
-					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					var eventType = "playing";
+					var infos = eventType;
+					outE = outE + currentTime + "#" + infos + "\n";
 
 		
 				}else if (event.data == YT.PlayerState.ENDED){
 					var currentTime = new Date().getTime();
-			
-					var infos = event;
-					let infoData = event.data
-					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					var eventType = "ended";
+					var infos = eventType;
+					outE = outE + currentTime + "#" + infos + "\n";
 					
 		
 				}else if (event.data == YT.PlayerState.PAUSED){
 					var currentTime = new Date().getTime();
-					var infos = event;
-					let infoData = event.data
-					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					var eventType = "paused";
+					let infos = eventType
+					outE = outE + currentTime + "#" + infos + "\n";
 					
 		
 				}else if (event.data == YT.PlayerState.BUFFERING){
 					var currentTime = new Date().getTime();
-
-					var infos = event;
-					let infoData = event.data
-					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					var eventType = "buffering"
+					var infos = eventType;
+					outE = outE + currentTime + "#" + infos + "\n";
 		
 				}else if (event.data == YT.PlayerState.CUED){
 					var currentTime = new Date().getTime();
-
-					var infos = event;
-					let infoData = event.data
-					outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+					var eventType = "cued"
+					var infos = eventType;
+					outE = outE + currentTime + "#" + infos + "\n";
 				
 				}
 			};
 
 			function onPlayerPlaybackQualityChange(event){
 				var currentTime = new Date().getTime();
-				var infos = event;
-				let infoData = event.data
-				outE = outE + currentTime + "#" + infos + "#" + infoData + "\n";
+				var infos = "playQualityChange:"+event.data;
+				outE = outE + currentTime + "#" + infos + "\n";
 
 			}
 				
@@ -130,7 +126,7 @@
 		
 		
 		function playerActive() {
-			'use strict';
+			//'use strict';
 		
 			return player && player.hasOwnProperty('getPlayerState');
 		}
@@ -164,7 +160,8 @@
 
 		function getInfos(){
 			var currentTime = new Date().getTime();
-			inputVideoId = document.getElementById('YouTube-video-id');
+			var inputVideo = document.getElementById('YouTube-video-id');
+			var inputVideoId = inputVideo.value;
 		
 			if(playQuality !=  player.getPlaybackQuality()){
 				playQuality = player.getPlaybackQuality();
@@ -173,8 +170,8 @@
 			}
 
 			if(ytId != inputVideoId){
-				inputVideoId = document.getElementById('YouTube-video-id');
-				var infos = inputVideoId.value;
+				ytId = inputVideoId
+				var infos = "videoID:" + ytId;
 				outE =   outE + currentTime + "#" + infos + "\n";
 			}
 

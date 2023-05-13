@@ -32,13 +32,13 @@ def run_video():
 
 	# get url
 	url2 = 'https://www.youtube.com/watch?v=' + EXPCONFIG['ytId']
-	url = 'https://video-qoe-app.onrender.com/automation'
+	url = 'https://video-qoe-app.onrender.com/youtube-player'
     #'https://www.w3.org/2010/05/video/mediaevents.html'
 
 	# set file prefix
 	ts = time.time()
 	st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
-	prefix = "YT_" + EXPCONFIG['ytId'] + '_' + st
+	prefix = "YT_"+ st
 
     # define chrome settings
 	caps = DesiredCapabilities.CHROME.copy() 
@@ -56,17 +56,17 @@ def run_video():
 		time.sleep(10)
 
 			# read in js
-		jsFile = open('opt/pluginAsJS.js', 'r')
-		js = jsFile.read()
-		jsFile.close
+		# jsFile = open('opt/pluginAsJS.js', 'r')
+		# js = jsFile.read()
+		# jsFile.close
 
 			# open webpage
-		print (time.time(), ' start video ', EXPCONFIG['ytId'])
+		print (time.time(), ' start video ')
 		browser.get(url)
 		browser.get_screenshot_as_file('results/screenshot0.png')
 
 			# inject js
-		browser.execute_script(js)
+		#browser.execute_script(js)
 		duration = EXPCONFIG['duration']
 		time.sleep(duration)
 			
@@ -137,7 +137,7 @@ def getEvents(prefix):
 				timestamps.append(float(currentline[0]))
 				quality = str(currentline[1])
 				quality = quality.split(":")[1]
-				quality = quality.split(" ")[0]
+				#quality = quality.split(" ")[0]
 				qualities.append(quality)
 			if ("ended" in currentline[1]):
 				endtime = float(currentline[0])
@@ -155,6 +155,7 @@ def getBuffer(prefix):
 	playtime = []
 	buffertime = []
 	avPlaytime = []
+	percentBufferedVideo = []
 	isFirstLine = True
 	with open('results/' + prefix + "_buffer.txt", "r") as filestream:
 		for line in filestream:
@@ -165,9 +166,10 @@ def getBuffer(prefix):
 			timestamps.append(float(currentline[0]))
 			playtime.append(float(currentline[1]))
 			buffertime.append(float(currentline[2]))
-			avPlaytime.append(float(currentline[3][:-1]))
+			avPlaytime.append(float(currentline[3]))
+			percentBufferedVideo.append(float(currentline[4][:-1]))
 			isFirstLine = False
-	return [timestamps , playtime, buffertime, avPlaytime]
+	return [timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo]
 
 def calculateBitrate(prefix, bitrates):
 	[timestamps, qualities, endtime] = getEvents(prefix)
