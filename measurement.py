@@ -15,7 +15,7 @@ import pandas as pd
 
 CONFIGFILE = 'config'
 EXPCONFIG = {"ytId":"Q_AeDvbjFsI",
-"duration":60,
+"duration":70,
 "bitrates":"tiny:110.139,small:246.425,medium:262.750,large:529.500,hd720:1036.744,hd1080:2793.167"
 }
 
@@ -54,7 +54,7 @@ def run_video():
 		#service = Service(executable_path="chromedriver.exe")
 		#browser = webdriver.Chrome(executable_path="opt/render/project/chromedriver", desired_capabilities=caps)
 		browser = webdriver.Chrome(ChromeDriverManager().install())
-		#browser.maximize_window()
+		browser.maximize_window()
 		time.sleep(10)
 
 			# read in js
@@ -192,14 +192,18 @@ def calculateBitrate(prefix, bitrates):
 		
 	usedBitrates = []	
 	#qualities = qualities.remove("undefined")
-	#print("qualityChange:", qualityChange)
+	print("qualityChange:", qualityChange)
 	#print("quality:", qualities)
 	
-	for x in range(0,len(qualityChange)):
+	for x in range(0, len(qualities)):
 		index = [i for i, j in enumerate(bitrates) if qualityChange[x] in j]
+		print("index", index[0])
 		currRate = float(bitrates[index[0]].split(":")[1])
-		#print("current rate", currRate)
+		print("current rate", currRate)
+		print("period", periods)
+		print ("x: ", x)
 		usedBitrates.extend([currRate] * periods[x])
+		#print("Used bitrates", usedBitrates)
 		
 	avgBitrate = sum(usedBitrates)/len(usedBitrates)
 	maxBitrate = max(usedBitrates)

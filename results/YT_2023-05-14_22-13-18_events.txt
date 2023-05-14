@@ -1,0 +1,15 @@
+1684098816177#quality:undefined#
+1684098816177#videoID:IpNG4ohSUkI#
+1684098816177#durationundefined#
+1684098816222#buffering#
+1684098816498#playQualityChange:large#
+1684098816603#videoID:tiEPqs4aQEc#
+1684098816754#buffering#
+1684098817271#playQualityChange:large#
+1684098822026#playQualityChange:hd1080#
+1684098822973#playQualityChange:large#
+1684098823297#playQualityChange:hd1080#
+1684098830637#quality:hd1080#
+1684098830637#duration0#
+1684098830656#playing#
+1684098831638#duration60.021#

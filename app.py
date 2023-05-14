@@ -45,7 +45,7 @@ def predict():
     qoeResult = predictQoE()
     print("prediction", qoeResult, user_mos)
 
-    return redirect('/result', qoeResult)
+    return render_template("predict_page.html", qoe=qoeResult, hope=user_mos)
 
 
 @app.route("/result")

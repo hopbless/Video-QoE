@@ -1,0 +1,12 @@
+1684101142359#quality:undefined#
+1684101142359#videoID:IpNG4ohSUkI#
+1684101142359#durationundefined#
+1684101142413#buffering#
+1684101142733#playQualityChange:large#
+1684101149556#playQualityChange:hd720#
+1684101149561#playQualityChange:large#
+1684101149834#playQualityChange:hd720#
+1684101150957#quality:hd720#
+1684101150957#duration0#
+1684101150972#playing#
+1684101151964#duration58.381#

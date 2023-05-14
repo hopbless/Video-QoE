@@ -144,7 +144,7 @@
 				//var i = player.buffered.length;
 				var availablePlaybackTime = player.getDuration();
 				var bufferedTime = availablePlaybackTime - currentPlayTime;
-				var percentBufferedVideo = (player.getVideoLoadedFraction() * 100).toFixed(1)
+				var percentBufferedVideo = ((player.getVideoLoadedFraction() * 100)/availablePlaybackTime).toFixed(1)
 				outC = outC + new Date().getTime() + "#" +  currentPlayTime + "#" + bufferedTime + "#" + availablePlaybackTime + "#" + percentBufferedVideo + "#" +  "\n";
 				document.getElementById("outC").innerHTML = outC;
 				document.getElementById("outE").innerHTML = outE;
