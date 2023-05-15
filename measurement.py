@@ -178,7 +178,8 @@ def getBuffer(prefix):
 			playtime.append(float(currentline[1]))
 			buffertime.append(float(currentline[2]))
 			avPlaytime.append(float(currentline[3]))
-			percentBufferedVideo.append(float(currentline[4][:-1]))
+			if(currentline[4] != "NaN"):
+				percentBufferedVideo.append(float(currentline[4][:-1]))
 			isFirstLine = False
 	return [timestamps , playtime, buffertime, avPlaytime, percentBufferedVideo]
 
@@ -186,23 +187,25 @@ def calculateBitrate(prefix, bitrates):
 	[timestamps, qualities, qualityChange, bufferings, endtime] = getEvents(prefix)
 	timestamps.append(endtime)
 	periods = [x / 1000 for x in timestamps]
+	print("initial period: ", periods)
 	periods = np.diff(periods)
+	print("diff period: ", periods)
 	periods = np.round(periods)
 	periods = [int(i) for i in periods]
+	print("int period: ", periods)
 		
 	usedBitrates = []	
 	#qualities = qualities.remove("undefined")
-	print("qualityChange:", qualityChange)
+	print("qualityChange: ", qualityChange)
 	#print("quality:", qualities)
 	
-	for x in range(0, len(qualities)):
+	for x in range(0, len(qualityChange)):
 		index = [i for i, j in enumerate(bitrates) if qualityChange[x] in j]
-		print("index", index[0])
+		print("x: ", x)
 		currRate = float(bitrates[index[0]].split(":")[1])
-		print("current rate", currRate)
-		print("period", periods)
-		print ("x: ", x)
-		usedBitrates.extend([currRate] * periods[x])
+		print("periods: ", periods)
+		if(x < len(periods)):
+			usedBitrates.extend([currRate] * periods[x])
 		#print("Used bitrates", usedBitrates)
 		
 	avgBitrate = sum(usedBitrates)/len(usedBitrates)
