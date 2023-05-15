@@ -112,7 +112,6 @@ def run_video():
 	df = pd.read_csv('_outStream.txt',names=header, sep=',', header=None)
 	df.to_csv('data/streams.csv')
 	
-
 	return
 
 
@@ -187,23 +186,18 @@ def calculateBitrate(prefix, bitrates):
 	[timestamps, qualities, qualityChange, bufferings, endtime] = getEvents(prefix)
 	timestamps.append(endtime)
 	periods = [x / 1000 for x in timestamps]
-	print("initial period: ", periods)
 	periods = np.diff(periods)
-	print("diff period: ", periods)
 	periods = np.round(periods)
 	periods = [int(i) for i in periods]
-	print("int period: ", periods)
 		
 	usedBitrates = []	
 	#qualities = qualities.remove("undefined")
-	print("qualityChange: ", qualityChange)
+	#print("qualityChange: ", qualityChange)
 	#print("quality:", qualities)
 	
 	for x in range(0, len(qualityChange)):
 		index = [i for i, j in enumerate(bitrates) if qualityChange[x] in j]
-		print("x: ", x)
 		currRate = float(bitrates[index[0]].split(":")[1])
-		print("periods: ", periods)
 		if(x < len(periods)):
 			usedBitrates.extend([currRate] * periods[x])
 		#print("Used bitrates", usedBitrates)
